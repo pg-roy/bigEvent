@@ -7,6 +7,14 @@
     margin-right: 10px;
 }
 
+.close {
+    position: absolute;
+}
+
+.userinfo {
+    transform: translateX(-20px);
+}
+
 a {
     transition: none !important;
 }
