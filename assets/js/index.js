@@ -1,45 +1,45 @@
+//1页面加载获取发请求获取信息渲染用户头像
 $(function () {
     getUserInfo();
-    let layer = layui.layer;
-    
-    //渲染头像函数
-    
     //退出按钮
-    //①给结构添加退出按钮，绑定点击事件
-    //用layer.confirm来判断是否退出，里面有三个参数
-    //点击确认清空token，跳转页面
-    $('#closeBtn').click(function() {
-        layer.confirm('请确认是否退出',{ icon: 3, title: '提示' },function(index) {
+    //给退出按钮绑定点击事件，利用layui的confirm提示框
+
+    $('#closeBtn').on('click', function () {
+        layer.confirm('是否退出', function (index) {
             localStorage.removeItem('token');
             location.href = '/login.html';
             layer.close(index);
-        })
+        });
     })
+
 })
+//写在外侧，方便子页面被调用
 function getUserInfo() {
+    let layer = layui.layer;
     $.ajax({
-        type: 'get',
+        method: 'get',
         url: '/my/userinfo',
         success: function (res) {
             if (res.status !== 0) {
                 return layer.msg('获取用户信息失败');
             }
-            //用res.status再判断一下
-            //渲染头像函数
-            rendarUser(res.data);
+            rendarData(res.data);
         }
-
     })
 }
-function rendarUser(user) {
+//渲染用户头像
+function rendarData(user) {
     let name = user.nickname || user.username;
     $('#welcome').html('欢迎' + name);
     if (user.user_pic !== null) {
-        $('.layui-nav-img').prop('src', user.user_pic);
-        $('.layui-nav-img').show();
+        $('.layui-nav-img').prop('src', user.user_pic).show();
         $('.text-avatar').hide();
+
     } else {
         $('.layui-nav-img').hide();
         $('.text-avatar').html(name[0].toUpperCase()).show();
     }
 }
+
+//退出按钮
+//给退出按钮绑定点击事件，利用layui的confirm提示框
